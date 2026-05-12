@@ -18,11 +18,10 @@ The backend has two endpoints:
 
 **Sample Code:**
 ```python
-headers = {'Authorization': f'Bearer {auth_token}'}
 data = {
     "ticker": "BTC",
     "price_history": [67100, 68100, 69100, 70100],
-    "num_predictions": 5,
+    "num_predictions": 1,
 }
 response = requests.post(f'{server}/predict', json=data, headers=headers)
 ```
@@ -39,7 +38,6 @@ response = requests.post(f'{server}/predict', json=data, headers=headers)
 
 **Sample Code:**
 ```python
-headers = {'Authorization': f'Bearer {auth_token}'}
 response = requests.get(f'{server}/get_results/{request_id}', headers=headers)
 ```
 **Sample Response:**
