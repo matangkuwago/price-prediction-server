@@ -1,0 +1,17 @@
+# Use an official lightweight Python image
+FROM python:3.11-slim
+
+WORKDIR /app
+
+# Copy the scripts
+COPY ./app ./app
+
+# Copy the checkpoints
+COPY ./checkpoint ./checkpoint
+
+# Copy the requirements file and install dependencies
+COPY requirements.txt .
+RUN pip install --no-cache-dir --upgrade -r requirements.txt
+
+# Start the celery worker
+CMD ["celery", "-A", "app.celery.celery_worker.celery_app", "worker", "--loglevel=info"]
