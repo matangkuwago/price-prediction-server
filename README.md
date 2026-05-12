@@ -29,7 +29,7 @@ response = requests.post(f'{server}/predict', json=data, headers=headers)
 **Sample Response:**
 ```python
 {
-  "request_id": "job_abc123_xyz"
+  "request_id": "ce76bf38-9221-4077-b587-65abf5485512"
 }
 ```
 
@@ -45,7 +45,7 @@ response = requests.get(f'{server}/get_results/{request_id}', headers=headers)
 **Sample Response:**
 ```python
 {
-    "result": [
+    "predictions": [
         "up",
         "down",
         "down",
@@ -57,6 +57,6 @@ response = requests.get(f'{server}/get_results/{request_id}', headers=headers)
 
 ## Installation and Usage
 
-1. Create a python virtual environment, use the python version in the `.python-version` file and install the pip packages in the `requirements.txt` file.
-2. Run ```./run_flask.sh``` to start the Flask server.
-3. Run ```./prediction_loop.sh``` to start the prediction engine.
+1.  Place your trained checkpoints into the checkpoint folder.
+2.  Install Docker.
+3.  Run `docker compose up --build`.
