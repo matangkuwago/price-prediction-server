@@ -1,13 +1,13 @@
-from typing import Annotated
+from typing import Annotated, Union
 from fastapi import APIRouter, HTTPException, status
-from app.schemas import Predictions
+from app.schemas import Predictions, PredictionError
 from celery.result import AsyncResult
 from app.celery.celery_worker import celery_app
 
 router = APIRouter()
 
 
-@router.get('/{request_id}', response_model=Predictions)
+@router.get('/{request_id}', response_model=Union[Predictions, PredictionError])
 async def get_prediction_results(request_id: str):
 
     res = AsyncResult(request_id, app=celery_app)
@@ -19,5 +19,8 @@ async def get_prediction_results(request_id: str):
             detail=error_message
         )
     else:
-        predictions = res.get()
-        return {"predictions": predictions}
+        prediction_result = res.get()
+        if isinstance(prediction_result, dict):
+            return PredictionError(**prediction_result)
+        else:
+            return Predictions(predictions=prediction_result)

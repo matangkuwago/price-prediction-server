@@ -1,5 +1,8 @@
 from fastapi import APIRouter, status
-from app.schemas import PredictionInput, Predictions, CreatePredictionRequestResponse
+from app.schemas import (
+    PredictionInput,
+    CreatePredictionRequestResponse
+)
 from app.celery.celery_worker import run_prediction
 
 

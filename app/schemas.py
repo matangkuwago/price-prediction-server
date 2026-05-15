@@ -29,3 +29,8 @@ class CreatePredictionRequestResponse(BaseModel):
 
 class Predictions(BaseModel):
     predictions: List[str]
+
+
+class PredictionError(BaseModel):
+    prediction_input: PredictionInput
+    error_message: str
