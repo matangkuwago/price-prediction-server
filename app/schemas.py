@@ -17,5 +17,9 @@ class PredictionInput(BaseModel):
     created_at: Optional[int] = Field(default_factory=get_timestamp)
 
 
+class RequestResponse(BaseModel):
+    request_id: str
+
+
 class Predictions(BaseModel):
     predictions: List[str]
