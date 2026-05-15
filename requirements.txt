@@ -35,6 +35,7 @@ packaging==26.2
 prompt_toolkit==3.0.52
 protobuf==7.34.1
 pydantic==2.13.4
+pydantic-settings==2.14.1
 pydantic_core==2.46.4
 Pygments==2.20.0
 python-dateutil==2.9.0.post0
