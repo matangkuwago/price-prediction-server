@@ -7,7 +7,7 @@ router = APIRouter()
 
 
 @router.get('/{request_id}', response_model=Predictions)
-def get_results(request_id):
+async def get_results(request_id):
 
     res = AsyncResult(request_id, app=celery_app)
 

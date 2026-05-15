@@ -7,7 +7,7 @@ router = APIRouter()
 
 
 @router.post('/', status_code=status.HTTP_202_ACCEPTED)
-def create_prediction_request(prediction_input: PredictionInput):
+async def create_prediction_request(prediction_input: PredictionInput):
     """
     Create a new prediction request
     """
