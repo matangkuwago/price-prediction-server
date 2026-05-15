@@ -1,3 +1,4 @@
+from typing import Annotated
 from fastapi import APIRouter, HTTPException, status
 from app.schemas import Predictions
 from celery.result import AsyncResult
@@ -7,7 +8,7 @@ router = APIRouter()
 
 
 @router.get('/{request_id}', response_model=Predictions)
-async def get_results(request_id):
+async def get_prediction_results(request_id: str):
 
     res = AsyncResult(request_id, app=celery_app)
 

@@ -1,5 +1,7 @@
+from typing import Annotated
+from annotated_types import Len
 from datetime import datetime
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, PrivateAttr
 from typing import Optional, List
 
 
@@ -10,14 +12,18 @@ def get_timestamp():
 class PredictionInput(BaseModel):
     model: str
     temperature: Optional[float] = 0.5
-    price_history: List[float]
-    num_predictions: int
+    price_history: Annotated[List[float], Len(min_length=2)]
+    num_predictions: int = Field(gt=0)
     description: Optional[str] = None
     top_p: Optional[float] = 0
-    created_at: Optional[int] = Field(default_factory=get_timestamp)
+    _created_at: Optional[int] = PrivateAttr(default_factory=get_timestamp)
 
 
-class RequestResponse(BaseModel):
+class ModelsResponse(BaseModel):
+    models: List[str]
+
+
+class CreatePredictionRequestResponse(BaseModel):
     request_id: str
 
 

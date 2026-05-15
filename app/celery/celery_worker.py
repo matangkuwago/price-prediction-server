@@ -1,7 +1,7 @@
 from celery import Celery
 from app.config import Config
 from app.schemas import PredictionInput
-from app.celery.prediction import predict
+from app.celery.prediction import predict, get_checkpoints
 
 
 # Configure Celery to use Redis as the message broker
@@ -17,3 +17,9 @@ def run_prediction(prediction_input_params):
     prediction_input = PredictionInput.model_validate(prediction_input_params)
     predictions = predict(prediction_input)
     return predictions
+
+
+@celery_app.task
+def get_models():
+    models = get_checkpoints()
+    return models

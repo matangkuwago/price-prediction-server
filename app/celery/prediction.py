@@ -1,3 +1,4 @@
+import os
 import gc
 import gpt_2_simple as gpt2
 import tensorflow as tf
@@ -12,6 +13,14 @@ class PriceMovement(str, Enum):
     SAME = "S-"
     UP = "U-"
     DOWN = "D-"
+
+
+def get_checkpoints(folder_path='./checkpoint'):
+    all_entries = os.listdir(folder_path)
+    checkpoints = [name for name in all_entries if os.path.isdir(
+        os.path.join(folder_path, name))]
+
+    return checkpoints
 
 
 def get_encoding(previous_value, current_value):
