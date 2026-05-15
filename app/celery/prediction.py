@@ -2,8 +2,8 @@ import os
 import gc
 import gpt_2_simple as gpt2
 import tensorflow as tf
-import logging
 from enum import Enum
+from celery.utils.log import get_task_logger
 from app.config import Config
 from app.schemas import PredictionInput
 
@@ -56,10 +56,11 @@ def encode_price_movement(prices: list[float]) -> str:
 
 
 def _predict_raw(model: str, temperature: float, top_p: float, price_movement: str, length: int) -> str:
-    logger = logging.getLogger(Config.LOGGER_NAME)
+    logger = get_task_logger(__name__)
     logger.info(f"GPT temperature: {temperature}")
     logger.info(f"GPT top_p: {top_p}")
     logger.info(f"GPT model: {model}")
+    logger.info(f"GPT price_movement: {price_movement}")
     logger.info(f"GPT output length: {length}")
 
     sess = gpt2.start_tf_sess()
@@ -75,6 +76,9 @@ def _predict_raw(model: str, temperature: float, top_p: float, price_movement: s
     tf.compat.v1.reset_default_graph()
     sess.close()
     gc.collect()
+
+    logger.info(f"GPT result: {result}")
+
     return result
 
 
@@ -98,12 +102,5 @@ def predict(prediction_input: PredictionInput) -> list[str]:
     prediction = prediction_raw[len_prefix:(len_prefix+len_prediction)]
     prediction_list = [get_word_encoding(prediction[i:i+2])
                        for i in range(0, len(prediction), 2)]
-
-    logger = logging.getLogger(Config.LOGGER_NAME)
-    logger.debug(f"num_input: {num_prefix}")
-    logger.debug(f"encoded_price_movement: {encoded_price_movement}")
-    logger.debug(f"prediction_raw: {prediction_raw}")
-    logger.debug(f"prediction: {prediction}")
-    logger.debug(f"prediction_list: {prediction_list}")
 
     return prediction_list
