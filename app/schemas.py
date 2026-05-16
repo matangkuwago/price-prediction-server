@@ -14,7 +14,6 @@ class PredictionInput(BaseModel):
     temperature: Optional[float] = 0.5
     price_history: Annotated[List[float], Len(min_length=2)]
     num_predictions: int = Field(gt=0)
-    description: Optional[str] = None
     top_p: Optional[float] = 0
     _created_at: Optional[int] = PrivateAttr(default_factory=get_timestamp)
 
@@ -31,6 +30,5 @@ class Predictions(BaseModel):
     predictions: List[str]
 
 
-class PredictionError(BaseModel):
-    prediction_input: PredictionInput
-    error_message: str
+class ResponseMessage(BaseModel):
+    detail: str
